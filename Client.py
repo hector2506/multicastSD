@@ -3,10 +3,12 @@ import socket
 import struct
 import sys
 
-if len(sys.argv) is 2:
-    eq = eq = str(sys.argv[1])
-else:
-    eq = ''
+eq = ''
+while eq is '':
+    eq = input("Insira uma expressão: ")
+    if eq is '':
+        print("Expressão vazia inserida")
+
 message = bytes(eq, encoding="ascii")    
 multicast_group = ('224.2.2.3', 8888)
 
@@ -32,7 +34,7 @@ try:
     while True:
         print('waiting to receive')
         try:
-            data, server = sock.recvfrom(16)
+            data, server = sock.recvfrom(1024)
         except socket.timeout:
             print('timed out, no more responses')
             break

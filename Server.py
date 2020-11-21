@@ -27,11 +27,14 @@ while True:
 
     print('received {} bytes from {}'.format(
         len(data), address))
-    print(data.decode("utf-8"))     #Recebe o dado em bytes e converte para string
-    result = round(eval(data),3) #Recebe o resultado da expressão armazenada na string e arrendonda para 3 casas decimais
-    print(f"O resultado da expressão é {result}\n" )
-    print(f'Enviando o resultado {result} para {address}')
+    print(data.decode("utf-8"))     
+    try:
+        result = round(eval(data),3) 
+        print(f"O resultado da expressão é {result}\n" )
+        print(f'Enviando o resultado {result} para {address}')
+    except:
+        result = "Expressao Invalida"
+        print("Expressão Inválida recebida!")
     message = bytes(str(result), encoding="ascii") 
     sock.sendto(message, address)
 
-    break
