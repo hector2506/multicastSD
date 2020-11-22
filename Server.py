@@ -85,7 +85,7 @@ def Server():
         socket.IPPROTO_IP,
         socket.IP_ADD_MEMBERSHIP,
         mreq)
-
+    print('waiting to receive message')
     # Receive/respond loop
     while True:
         print('waiting to receive message')
