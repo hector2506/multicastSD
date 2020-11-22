@@ -5,7 +5,8 @@ import threading
 import time
 def Heartbeat(inicializado=False):
     while True:
-        time.sleep(1)
+        if inicializado is False:
+            time.sleep(5)
         global id
         global listServers
         # Create the socket
@@ -22,6 +23,7 @@ def Heartbeat(inicializado=False):
         try:
             #print("Enviando HEARTBEAT")
             sent = sock.sendto(message, multicast_group_servers)
+            server_IP = socket.gethostbyname(socket.gethostname())
             # Look for responses from all recipients
             listServers = []
             cont = 0
@@ -53,8 +55,9 @@ def Heartbeat(inicializado=False):
                     #listServers.append(id)
                     break
                 else:
-                    print('received {!r} from {}'.format(
-                        data, server))
+                    if server_IP != server[0]:
+                        print('received {!r} from {}'.format(
+                          data, server))
         finally:
             if inicializado is True:
                 print("ID do servidor é {}".format(id))
@@ -88,8 +91,10 @@ def Server():
         print('waiting to receive message')
         data, address = sock.recvfrom(1024)
         server_IP = socket.gethostbyname(socket.gethostname())
-        print('received {} bytes from {}'.format(
-            len(data), address))
+        host_IP = address[0]
+        if server_IP != host_IP:
+            print('received {} bytes from {}'.format(
+                len(data), address))
         #print(data)
         if(data.decode("utf-8") == "HEARTBEAT"):
             message = bytes(str(id),encoding="ascii")
