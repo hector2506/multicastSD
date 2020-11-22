@@ -88,7 +88,6 @@ def Server():
     print('waiting to receive message')
     # Receive/respond loop
     while True:
-        print('waiting to receive message')
         data, address = sock.recvfrom(1024)
         server_IP = socket.gethostbyname(socket.gethostname())
         host_IP = address[0]
