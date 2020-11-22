@@ -15,10 +15,12 @@ sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, ttl)
 message = b'HEARTBEAT'
 multicast_group_servers = ('224.2.2.3', 8888)
 try:
+    #print("Enviando HEARTBEAT")
     sent = sock.sendto(message, multicast_group_servers)
     # Look for responses from all recipients
-    cont = 0
     listServers = []
+    cont = 0
+    
     while True:
         #print('Encontrando servidores')
         try:
@@ -39,7 +41,7 @@ try:
                 while i in listServers:
                     i += 1
                 id = i
-
+            listServers.append(id)
             break
         else:
             print('received {!r} from {}'.format(
@@ -72,16 +74,21 @@ while True:
 
     print('received {} bytes from {}'.format(
         len(data), address))
+    #print(data)
     if(data.decode("utf-8") == "HEARTBEAT"):
         message = bytes(str(id),encoding="ascii")
+        sock.sendto(message, address)
     else:
-        try:
-            result = round(eval(data),3) 
-            print("O resultado da expressão é {}\n".format(result))
-            print('Enviando o resultado {} para {}'.format(result, address))
-        except:
-            result = "Expressao Invalida"
-            print("Expressão Inválida recebida!")
-        message = bytes(str(result), encoding="ascii") 
-    sock.sendto(message, address)
+        listServers.sort()
+        #print(listServers)
+        if id == listServers[0]:
+            try:
+                result = round(eval(data),3) 
+                #print("O resultado da expressão é {}\n".format(result))
+                print('Enviando o resultado {} para {}'.format(result, address))
+            except:
+                result = "Expressao Invalida"
+                print("Expressão Inválida recebida!")
+            message = bytes(str(result), encoding="ascii") 
+            sock.sendto(message, address)
 
