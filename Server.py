@@ -68,7 +68,7 @@ def Server():
             listServers.sort()
             if id == listServers[0]:
                 try:
-                    result = round(eval(data),3) 
+                    result = round(eval(data),2) 
                     print('Enviando o resultado {} para {}'.format(result, address[0]))
                 except:
                     result = "Expressao Invalida"
