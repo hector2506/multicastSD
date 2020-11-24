@@ -23,18 +23,13 @@ def Heartbeat(inicializado=False):
                 try:
                     data, server = sock.recvfrom(1024)
                     cont+=1
-                    if id != data.decode("utf-8"):
-                        listServers.append(int(data.decode("utf-8")))
+                    listServers.append(int(data.decode("utf-8")))
                 except socket.timeout:
                     if inicializado is True:        
-                        data, server = None, None
-                        if cont is 0:
-                            id = 0
-                        else:
-                            i = 0
-                            while i in listServers:
-                                i += 1
-                            id = i
+                        i = 0
+                        while i in listServers:
+                            i += 1
+                        id = i
                     break        
         finally:
             if inicializado is True:
@@ -43,7 +38,6 @@ def Heartbeat(inicializado=False):
             sock.close()
 
 def Server():
-    global id
     global listServers
     multicast_group = '224.2.2.3'
     server_address = ('', 8888)
