@@ -34,6 +34,7 @@ def Heartbeat(inicializado=False):
         finally:
             if inicializado is True:
                 print("ID do servidor é {}".format(id))
+                sock.close()
                 break                
             sock.close()
 
@@ -52,7 +53,6 @@ def Server():
     print('Esperando receber mensagem') 
     while True:       
         data, address = sock.recvfrom(1024)
-        host_IP = address[0]
         if(data.decode("utf-8") == "HEARTBEAT"):
             message = bytes(str(id),encoding="ascii")
             sock.sendto(message, address)
