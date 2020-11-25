@@ -3,6 +3,7 @@ import struct
 import sys
 import threading
 import time
+import random
 def Heartbeat(inicializado=False):
     while True:
         if inicializado is False:
@@ -51,7 +52,13 @@ def Server():
         socket.IP_ADD_MEMBERSHIP,
         mreq)
     print('Esperando receber mensagem') 
-    while True:       
+    while True:    
+        if (listServers.count(id) > 1):
+            print("Erro! Servidor com o mesmo id encontrado!")
+            print("Gerando um id novo")
+            time.sleep(random.randrange(0, 10, 2)*0.1)
+            Heartbeat(True)
+            print('Esperando receber mensagem')
         data, address = sock.recvfrom(1024)
         if(data.decode("utf-8") == "HEARTBEAT"):
             message = bytes(str(id),encoding="ascii")
