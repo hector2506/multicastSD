@@ -19,11 +19,9 @@ def Heartbeat(inicializado=False):
         try:
             sent = sock.sendto(message, multicast_group_servers)
             listServers = []
-            cont = 0
             while True:
                 try:
                     data, server = sock.recvfrom(1024)
-                    cont+=1
                     listServers.append(int(data.decode("utf-8")))
                 except socket.timeout:
                     if inicializado is True:        
